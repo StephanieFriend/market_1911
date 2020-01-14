@@ -26,4 +26,26 @@ class Market
       end
     end.flatten.compact
   end
+
+  def sorted_item_list
+    @vendors.map do |vendor|
+      vendor.inventory.map do |ite, quant|
+        ite.name
+      end
+    end.sort.flatten.uniq
+  end
+
+  def total_inventory
+    tot_inv_hash = {}
+    @vendors.map do |vendor|
+      vendor.inventory.map do |ite, quant|
+        if tot_inv_hash.include?(ite)
+          tot_inv_hash[ite] = tot_inv_hash[ite] + quant
+        else
+          tot_inv_hash[ite] = quant
+        end
+      end
+    end.uniq
+    tot_inv_hash
+  end
 end
