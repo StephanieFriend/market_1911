@@ -28,6 +28,8 @@ class Market
   end
 
   def sorted_item_list
+  # Per Megan I switched the "Peach" and "Peach-Raspberry Nice Cream"
+  # on the test as it wasn't returning correctly
     @vendors.map do |vendor|
       vendor.inventory.map do |ite, quant|
         ite.name
@@ -47,5 +49,14 @@ class Market
       end
     end.uniq
     tot_inv_hash
+  end
+
+  def sell(item, quantity)
+    if total_inventory[item] > quantity
+      return false
+    else
+      require "pry"; binding.pry
+      vendors_that_sell(item) - quantity
+    end 
   end
 end
