@@ -52,11 +52,18 @@ class Market
   end
 
   def sell(item, quantity)
-    if total_inventory[item] > quantity
+    if (total_inventory[item] == nil) || (total_inventory[item] < quantity)
       return false
-    else
-      require "pry"; binding.pry
-      vendors_that_sell(item) - quantity
-    end 
+    elsif total_inventory[item] > quantity
+      vendors_that_sell(item).map do |vendor|
+        vendor.inventory.map do |ite, quant|
+          until (quant == 0) || (quantity == 0)
+            quant - quantity
+            break
+          end
+          true
+        end.any?
+      end.pop
+    end
   end
 end
